@@ -1,11 +1,11 @@
 Introduction rapide à Behat
 ====================
 
-Entrez dans l'univers Behat ! Behat est un outil qui rend le "développement
-piloté par le comportement" (Behavior Driven Development, ou BDD) possible.
+Entrez dans l'univers Behat ! Behat est un outil qui rend le "Développement
+Piloté par le Comportement" (Behavior Driven Development, ou BDD) possible.
 Avec le BDD, vous écrivez des spécifications, lisibles par des humains, qui
-décrivent le fonctionnement de votre application/ Ces spéficiations peuvent être
-exécutées pour en tester l'implémentation dans votre application. Et oui,
+décrivent le fonctionnement de votre application. Ces spécifications peuvent
+être exécutées pour en tester l'implémentation dans votre application. Et oui,
 c'est aussi cool que ça en a l'air !
 
 par exemple, imaginez que vous souhaitez spécifier une application de listing 
@@ -170,7 +170,7 @@ fonctionnalité, suivie de trois lignes qui en décrivent le bénéfice, le rôl
 la fonctionnalité elle-même.
 
 Même si cette section est nécessaire, elle n'est pas indispensable pour Behat.
-Si elle est importante, c'est pour que votre fonctionnalité puiss être comprise
+Si elle est importante, c'est pour que votre fonctionnalité puisse être comprise
 et lisible par les autres lecteurs.
 
 Remarquez la présence du commentaire ``# language: fr``. Ce commentaire va
@@ -198,9 +198,9 @@ Ensuite, ajoutez le scénario suivant à la fin du fichier
 .. tip::
 
     la syntaxe spéciale ``"""`` dans les dernières lignes permet de définir des
-    étapes sur plusieurs lignes. ne vous préocuppez pas pour le moment.
+    étapes sur plusieurs lignes. ne vous préoccuppez pas pour le moment.
 
-Chaque fonctionnalité est définie par un ou plusieurs "scenarios", qui
+Chaque fonctionnalité est définie par un ou plusieurs "scénarios", qui
 décrivent la manière dont la fonctionnalité doit se comporter dans différentes
 conditions. C'est cette partie qui va se transformer en test. Chaque
 scénario suit toujours le même format de base :
@@ -380,7 +380,7 @@ Répétez l'opération pour les autres étapes non définies. Le fichier
     Quand vous utilisez des arguments multi-lignes - comme lorsque nous 
     avons utilisé la syntaxe ``"""`` plus haut - la valeur passée à la 
     méthode (c'est-à-dire ``$string``) est un objet qui peut être converti en 
-    chaîne de caratères en utilisant la syntaxe ``(string) $string``, ou bien 
+    chaîne de caractères en utilisant la syntaxe ``(string) $string``, ou bien
     ``$string->getRaw()``.
 
 Bien ! Maintenant que vous avez défini toutes vos étapes, lancez à nouveau
@@ -418,7 +418,6 @@ scénarios à facile. Par exemple, ajoutez ce qui suit au fichier
 
 Lancez à nouveau Behat. Cette fois, deux tests sont exécutés ; et les deux
 passent bien !
-Run Behat again. This time, it'll run two tests, and both will pass.
 
 .. image:: /images/ls_passing_two_steps.jpg
    :align: center
@@ -430,7 +429,7 @@ intègre une librairie très riche, appelée `Mink`_, pour cela.
 
 Bien sûr, il reste encore pas mal de choses à apprendre encore, y compris 
 en découvrir plus sur la :doc:`Syntaxe de Gherkin </guides/1.gherkin>` (le
-language utilisé dans le fichier ``ls.feature``).
+langage utilisé dans le fichier ``ls.feature``).
 
 D'un peu plus près...
 ----------------------
@@ -455,7 +454,7 @@ lui-même décomposé en trois zones :
 3. ``features/bootstrap/FeatureContext.php`` - Ce fichier contient la classe
    de Contexte dans laquelle chaque étape des scénarios sera exécutée
 
-Allez plus loin avec les Fonctionnalités
+Plus loin avec les Fonctionnalités
 -------------------
 
 Comme vous l'avez déjà vu, une fonctionnalité est un simple et lisible fichier
@@ -473,7 +472,7 @@ règles de base :
    pouvez écrire ce que vous voulez au dessus du premier scénario : ce texte
    sera alors consideré comme une simple description de la fonctionnalité.
 
-4. Chaque scénarion démarre par le mot-clef ``Scénario``, suivi par une
+4. Chaque scénario démarre par le mot-clef ``Scénario``, suivi par une
    courte description de dernier. Chaque scénario contient une liste d'étapes,
    qui doivent démarrer par l'un de ces mot-clefs : ``Etant donné que``,
    ``Quand``, ``Alors``, ``Et`` ou ``Mais``. Behat ne fait aucune distinction
@@ -501,7 +500,7 @@ une expression régulière et une méthode. Par exemple :
 
 Quelques repères :
 
-1. ``@Given`` est un mot-clef de définition is a definition keyword. Trois
+1. ``@Given`` est un mot-clef de définition. Trois
     mot-clefs sont autorisés dans les annotations : ``@Given``/``@When``/
    ``@Then``. Ces trois mot-clefs de définition sont techniquement équivalent,
    ils ne servent qu'à vous permettre de donner plus de sens à vos étapes
@@ -532,7 +531,7 @@ Quelques repères :
 
 .. tip::
 
-    behat ne dispose pas de son propre outil d'assertion, mais vous permet
+    Behat ne dispose pas de son propre outil d'assertion, mais vous permet
     d'utiliser n'importe quel outil tiers. Par exemple, si vous êtes familié
     avec PHPUnit, vous pouvez utiliser ses assertions dans Behat :
 
@@ -560,7 +559,7 @@ Quelques repères :
         }
 
 A contrario, toutes les étapes qui ne *déclenchent pas* d'exception seront
-considérées par behat comme valides ("passées avec succès").
+considérées par Behat comme valides ("passées avec succès").
 
 Vous trouverez plus d'informations à ce sujet dans le
 :doc:`Guide de définitions d'étape </guides/2.definitions>`
@@ -569,7 +568,7 @@ La classe de Contexte : ``FeatureContext``
 -------------------------------------
 
 Behat crée un objet de contexte pour chaque scénario, puis exécute toutes les
-étapes de ce scénarion dans ce même objet. En d'autres termes, si vous
+étapes de ce scénario dans ce même objet. En d'autres termes, si vous
 souhaitez partager des variables entre des étapes, vous pouvez le faire
 facilement en assignant des valeurs aux attributs de l'objet de contexte
 lui-même.
@@ -617,6 +616,7 @@ tester une application web avec Behat et Mink.
 
 .. _`behavior driven development`: http://en.wikipedia.org/wiki/Behavior_Driven_Development
 .. _`Mink`: https://github.com/behat/mink
+.. _`Comment tester une application web?`: http://blog.lepine.pro/php/behat-jour-1-comment-tester-son-produit-scrum
 .. _`What's in a Story?`: http://blog.dannorth.net/whats-in-a-story/
 .. _`Cucumber`: http://cukes.info/
 .. _`Goutte`: https://github.com/fabpot/goutte
