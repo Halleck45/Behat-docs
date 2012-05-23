@@ -2,7 +2,7 @@ Introduction rapide à Behat
 ====================
 
 Entrez dans l'univers Behat ! Behat est un outil qui rend le "développement
-piloté par le comportement" (Beahvior Driven Development, ou BDD) possible.
+piloté par le comportement" (Behavior Driven Development, ou BDD) possible.
 Avec le BDD, vous écrivez des spécifications, lisibles par des humains, qui
 décrivent le fonctionnement de votre application/ Ces spéficiations peuvent être
 exécutées pour en tester l'implémentation dans votre application. Et oui,
@@ -38,7 +38,7 @@ grâce à la librairie `Mink`.
 
 .. note::
 
-    Behat a été inspiré par le projet Ruby _`Cucumber`_.
+    Behat a été inspiré par le projet Ruby `Cucumber`_.
 
 Installation
 ------------
@@ -159,6 +159,7 @@ des fichiers". Commencez donc par créer le fichier ``features/ls.feature`` :
 .. code-block:: gherkin
 
     # features/ls.feature
+    # language: fr
     Fonctionnalité: ls
       Afin de voir l'arboresence d'un dossier
       En tant qu'utilisateur UNIX
@@ -171,6 +172,9 @@ la fonctionnalité elle-même.
 Même si cette section est nécessaire, elle n'est pas indispensable pour Behat.
 Si elle est importante, c'est pour que votre fonctionnalité puiss être comprise
 et lisible par les autres lecteurs.
+
+Remarquez la présence du commentaire ``# language: fr``. Ce commentaire va
+indiquer à Behat que nous travaillons en Français.
 
 Décrire un scénario
 ~~~~~~~~~~~~~~~~~
@@ -229,18 +233,24 @@ disponibles dans vos scénarios pour en faciliter la lecture.
 Lancer Behat
 ~~~~~~~~~~~~~~~
 
-Vous venez de définir une fonctionnaltié et un scénario de cette
-fonctionnalité. Vous êtes prêt à voir Behat en action ! Exécutez Behat depuis
-le dossier de votre projet:
+Vous venez de définir une fonctionnalité, ainsi que son premier scénario.
+Vous êtes prêt à voir Behat en action ! Exécutez Behat depuis le dossier de
+votre projet:
 
 .. code-block:: bash
 
-    $ behat
+    $ behat --lang=fr
 
 Si tout fonctionne correctement, vous devriez voir quelque chose comme :
 
 .. image:: /images/ls_no_defined_steps.jpg
    :align: center
+
+.. note::
+
+    Le paramètre ``lang=fr`` permet de préciser à Behat de travailler en
+    Français. N'oubliez pas d'ajouter le commentaire ``# language: fr`` au
+    début de vos fichiers de fonctionnalité.
 
 Définir vos propres étapes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -422,10 +432,10 @@ Bien sûr, il reste encore pas mal de choses à apprendre encore, y compris
 en découvrir plus sur la :doc:`Syntaxe de Gherkin </guides/1.gherkin>` (le
 language utilisé dans le fichier ``ls.feature``).
 
-Some more Behat Basics
+D'un peu plus près...
 ----------------------
 
-When you run ``behat --init``, it sets up a directory that looks like this:
+La commande ``behat --init`` initialise le dossier afin qu'il ressemble à ceci :
 
 .. code-block:: bash
 
@@ -433,127 +443,98 @@ When you run ``behat --init``, it sets up a directory that looks like this:
        `-- bootstrap
            `-- FeatureContext.php
 
-Everything related to Behat will live inside the ``features`` directory, which
-is composed of three basic areas:
+Tout ce qui à faire à Behat sera contenu dans le dossier ``features``, qui est
+lui-même décomposé en trois zones :
 
-1. ``features/`` - Behat looks for ``*.feature`` files here to execute
+1. ``features/`` - Behat y recherche la liste des fichiers ``*.feature`` à
+   exécuter
 
-2. ``features/bootstrap/`` - Every ``*.php`` file in that directory will
-   be autoloaded by Behat before any actual steps are executed
+2. ``features/bootstrap/`` - Chaque fichier PHP (``*.php``) présent sera
+   automatiquement chargé par Behat avant que les tests ne soit lancés
 
-3. ``features/bootstrap/FeatureContext.php`` - This file is the context
-   class in which every scenario step will be executed
+3. ``features/bootstrap/FeatureContext.php`` - Ce fichier contient la classe
+   de Contexte dans laquelle chaque étape des scénarios sera exécutée
 
-More about Features
+Allez plus loin avec les Fonctionnalités
 -------------------
 
-As you've already seen, a feature is a simple, readable plain text file,
-in a format called Gherkin. Each feature file follows a few basic rules:
+Comme vous l'avez déjà vu, une fonctionnalité est un simple et lisible fichier
+texte, dans un format appelé Gherkin. Chaque fonctionnalité suit ces quelques
+règles de base :
 
-1. Every ``*.feature`` file conventionally consists of a single "feature"
-   (like the ``ls`` command or *user registration*).
+1. Par convention, chaque fichier ``*.feature`` représente une seule
+   fonctionnalité (comme la fonctionnalité ``ls``, la fonctionnalité
+   *enregistrement d'un utilisateur*, etc.)
 
-2. A line starting with the keyword ``Feature:`` followed by its title and
-   three indented lines defines the start of a new feature.
+2. La fonctionnalité démarre par une ligne démarre avec le mot-clef
+   ``Fonctionnalité:``, suivi par son titre, puis trois lignes qui la décrivent.
 
-3. A feature usually contains a list of scenarios. You can write whatever
-   you want up until the first scenario: this text will become the feature
-   description.
+3. Une fonctionnalité contient d'ordinaire une liste de scénarios. Vous
+   pouvez écrire ce que vous voulez au dessus du premier scénario : ce texte
+   sera alors consideré comme une simple description de la fonctionnalité.
 
-4. Each scenario starts with the ``Scenario:`` keyword followed by a short
-   description of the scenario. Under each scenario is a list of steps, which
-   must start with one of the following keywords: ``Given``, ``When``, ``Then``,
-   ``But`` or ``And``. Behat treats each of these keywords the same, but you
-   should use them as intended for consistent scenarios.
+4. Chaque scénarion démarre par le mot-clef ``Scénario``, suivi par une
+   courte description de dernier. Chaque scénario contient une liste d'étapes,
+   qui doivent démarrer par l'un de ces mot-clefs : ``Etant donné que``,
+   ``Quand``, ``Alors``, ``Et`` ou ``Mais``. Behat ne fait aucune distinction
+   entre ces mot-clefs, mais vous pouvez les utiliser pour donner plus de sens
+   à vos scénarios.
 
-.. tip::
-
-    Behat also allows you to write your features in your native language.
-    In other words, instead of writing ``Feature``, ``Scenario`` or ``Given``,
-    you can use your native language by configuring Behat to use one of its
-    many supported languages.
-    
-    To check if your language is supported and to see the available keywords,
-    run:
-    
-    .. code-block:: bash
-    
-        $ behat --story-syntax --lang YOUR_LANG
-
-    Supported languages include (but are not limited to) ``fr``, ``es``, ``it``
-    and, of course, the english pirate dialect ``en-pirate``.
-
-    Keep in mind, that any language, different from ``en`` should be explicitly
-    marked with ``# language: ...`` comment at the begining of your
-    ``*.feature`` file:
-
-    .. code-block:: gherkin
-
-        # language: fr
-        Fonctionnalité: ...
-          ...
-
-You can read more about features and Gherkin language in ":doc:`/guides/1.gherkin`"
-guide.
-
-More about Steps
+Plus d'informations sur les étapes
 ----------------
 
-For each step (e.g. ``Given I am in a directory "test"``), Behat will look
-for a matching step definition by matching the text of the step against the
-regular expressions defined by each step definition.
+Behat va faire le lien entre, d'un côté le texte qui décrit une étape, de
+l'autre une expression régulière qui lui fait correspondre une définition.
 
-A step definition is written in php and consists of a keyword, a regular
-expression, and a callback. For example:
+Une définition d'étape est rédigée en PHP. Elle consiste en un mot-clef,
+une expression régulière et une méthode. Par exemple :
 
 .. code-block:: php
 
     /**
-     * @Given /^I am in a directory "([^"]*)"$/
+     * @Given /^que je suis dans le dossier "([^"]*)"$/
      */
-    public function iAmInADirectory($dir)
+    public function queJeSuisDansLeDossier($dir)
     {
-        if (!file_exists($dir)) {
-            mkdir($dir);
-        }
-        chdir($dir);
+        // (...)
     }
 
-A few pointers:
+Quelques repères :
 
-1. ``@Given`` is a definition keyword. There are 3 supported keywords in
-   annotations: ``@Given``/``@When``/``@Then``. These three definition keywords
-   are actually equivalent, but all three are available so that your step
-   definition remains readable.
+1. ``@Given`` est un mot-clef de définition is a definition keyword. Trois
+    mot-clefs sont autorisés dans les annotations : ``@Given``/``@When``/
+   ``@Then``. Ces trois mot-clefs de définition sont techniquement équivalent,
+   ils ne servent qu'à vous permettre de donner plus de sens à vos étapes
+   lorsqu'elles sont lues par des humains.
 
-2. The text after the keyword is the regular expression (e.g. ``/^I am in a directory "([^"]*)"$/``).
+2. Le texte qui suit le mot-clef de définition est une expression régulière
+   (/^que je suis dans le dossier "([^"]*)"$/).
 
-3. All search patterns in the regular expression (e.g. ``([^"]*)``) will become
-   method arguments (``$dir``).
+3. Chaque motif de recherche de l'expression régulière (``([^"]*)``) sera passé
+   à la méthode sous forme de paramètre (``$dir``).
 
-4. If, inside a step, you need to tell Behat that some sort of "failure" has
-   occurred, you should throw an exception:
+4. Si vous souhaitez, à l'intérieur d'une étape, signifier à Behat que quelque
+   chose s'est mal passé, vous devez lancez une exception :
 
     .. code-block:: php
 
        /**
-        * @Then /^I should get:$/
-        */
-       public function iShouldGet(PyStringNode $string)
-       {
-           if ((string) $string !== $this->output) {
-               throw new Exception(
-                   "Actual output is:\n" . $this->output
-               );
+         * @Given /^que je suis dans le dossier "([^"]*)"$/
+         */
+        public function queJeSuisDansLeDossier($dir)
+        {
+            // (...)
+
+            if (...) {
+               throw new Exception("explicit message");
            }
-       }
+        }
 
 .. tip::
 
-    Behat doesn't come with its own assertion tool, but you can use any proper
-    assertion tool out there. Proper assertion tool is a library, which
-    assertions throw exceptions on fail. For example, if you're familiar with
-    PHPUnit, you can use its assertions in Behat:
+    behat ne dispose pas de son propre outil d'assertion, mais vous permet
+    d'utiliser n'importe quel outil tiers. Par exemple, si vous êtes familié
+    avec PHPUnit, vous pouvez utiliser ses assertions dans Behat :
 
     .. code-block:: php
 
@@ -569,58 +550,66 @@ A few pointers:
         class FeatureContext extends BehatContext
         {
             /**
-             * @Then /^I should get:$/
+             * @Then /^je dois obtenir :$/
              */
-            public function iShouldGet(PyStringNode $string)
+            public function jeDoisObtenir(PyStringNode $string)
             {
-                assertEquals($string->getRaw(), $this->output);
+                $expected = (...);
+                assertEquals($string->getRaw(), $expected);
             }
         }
 
-In the same way, any step that does *not* throw an exception will be seen
-by Behat as "passing". 
+A contrario, toutes les étapes qui ne *déclenchent pas* d'exception seront
+considérées par behat comme valides ("passées avec succès").
 
-You can read more about step definitions in ":doc:`/guides/2.definitions`" guide.
+Vous trouverez plus d'informations à ce sujet dans le
+:doc:`Guide de définitions d'étape </guides/2.definitions>`
 
-The Context Class: ``FeatureContext``
+La classe de Contexte : ``FeatureContext``
 -------------------------------------
 
-Behat creates a context object for each scenario and executes all scenario
-steps inside that same object. In other words, if you want to share variables
-between steps, you can easily do that by setting property values on the context
-object itself (which was shown in the previous example).
+Behat crée un objet de contexte pour chaque scénario, puis exécute toutes les
+étapes de ce scénarion dans ce même objet. En d'autres termes, si vous
+souhaitez partager des variables entre des étapes, vous pouvez le faire
+facilement en assignant des valeurs aux attributs de l'objet de contexte
+lui-même.
 
-You can read more about ``FeatureContext`` in ":doc:`/guides/4.context`" guide.
+Vous pourrez en découvrir plus sur les ``Contextes`` en consultant
+":doc:`/guides/4.context`".
 
-The ``behat`` Command Line Tool
+Behat en lignes de commandes (CLI)
 -------------------------------
 
-Behat comes with a powerful console utility responsible for executing the
-Behat tests. The utility comes with a wide array of options.
+Behat contient un outil en lignes de commandes qui permet d'exécuter les
+tests. Cet outil dispose de différentes options.
 
-To see options and usage for the utility, run:
+Pour voir la liste des ces options (et leur description), exécutez :
 
 .. code-block:: bash
 
     $ behat -h
 
-One of the handiest things it does it to show you all of the step definitions
-that you have configured in your system. This is an easy way to recall exactly
-how a step you defined earlier is worded:
+Il est important de souligner que cet outil vous permet d'obtenir la liste
+des toutes les définitions d'étapes que vous avez vous-même introduit dans le
+système. C'est un moyen simple de vous remémorer exactement ce que vous avez
+déjà défini auparavant :
 
 .. code-block:: bash
 
-    $ behat -dl
+    $ behat -dl --lang=fr
 
-You can read more about Behat CLI in ":doc:`/guides/6.cli`" guide.
+Vous pourrez en découvrir plus sur Behat en ligns de commande dans
+":doc:`/guides/6.cli`".
 
-What's Next?
+Et après ?
 ------------
 
-Congratulations! You now know everything you need in order to get started
-with behavior driven development and Behat. From here, you can learn more
-about the :doc:`Gherkin</guides/1.gherkin>` syntax or learn how to test your
-web applications by using Behat with Mink.
+Félicitations ! Vous en savez désormais suffisamment pour démarrer avec le
+Développement Piloté par le Comportement et sur Behat.
+
+Maintenant, vous pouvez en apprendre plus sur la
+:doc:`Syntaxe de Gherkin </guides/1.gherkin>`, ou bien découvrir comment
+tester une application web avec Behat et Mink.
 
 * :doc:`/cookbook/behat_and_mink`
 * :doc:`/guides/1.gherkin`
