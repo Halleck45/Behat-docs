@@ -1,7 +1,7 @@
 Introduction rapide à Behat
 ====================
 
-Entrez dans le monde Behat ! Behat est un outil qui rend le "développement
+Entrez dans l'univers Behat ! Behat est un outil qui rend le "développement
 piloté par le comportement" (Beahvior Driven Development, ou BDD) possible.
 Avec le BDD, vous écrivez des spécifications, lisibles par des humains, qui
 décrivent le fonctionnement de votre application/ Ces spéficiations peuvent être
@@ -9,7 +9,7 @@ exécutées pour en tester l'implémentation dans votre application. Et oui,
 c'est aussi cool que ça en a l'air !
 
 par exemple, imaginez que vous souhaitez spécifier une application de listing 
-de fichier, à savoir la fameus commande UNIX ``ls``.
+de fichier, à savoir la fameuse commande UNIX ``ls``.
 Voilà comment ça se passerait :
 
 .. code-block:: gherkin
@@ -52,7 +52,7 @@ Méthode #1 (Composer)
 
 La méthode la plus simple pour installer Behat est de passer par Composer.
 
-Créee un fichier ``composer.json`` à la racine de votre projet
+Créez un fichier ``composer.json`` à la racine de votre projet
 
 .. code-block:: js
 
@@ -203,7 +203,7 @@ scénario suit toujours le même format de base :
 
 .. code-block:: gherkin
 
-    Scénario: Some description of the scenario
+    Scénario: Une description du scénario
       Etant donné [un contexte]
       Quand [un événement]
       Alors [un résultat attendu]
@@ -239,35 +239,39 @@ le dossier de votre projet:
 
 Si tout fonctionne correctement, vous devriez voir quelque chose comme :
 
-.. image:: /images/ls_no_defined_steps.png
+.. image:: /images/ls_no_defined_steps.jpg
    :align: center
 
-Writing your Step definitions
+Définir vos propres étapes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Behat automatically finds the ``features/ls.feature`` file and tries to execute
-its ``Scenario`` as a test. However, we haven't told Behat what to do with
-statements like ``Given I am in a directory "test"``, which causes an error.
-Behat works by matching each statement of a ``Scenario`` to a list of regular
-expression "steps" that you define. In other words, it's your job to tell
-Behat what to do when it sees ``Given I am in a directory "test"``. Fortunately,
-Behat helps you out by printing the regular expression that you probably
-need in order to create that step definition:
+Behat trouve automatiquement le fichier ``features/ls.feature`` et tente 
+d'exécuter ses ``Scénarios`` comme des tests. Cependant, nous n'avons pas 
+encore vu comment Behat fait pour comprendre des expressions comme ``Etant 
+donné que je suis dans le dossier "test"``, ce qui provoque une erreur.
+
+En fait, Behat fait la correspondance entre chaque ``Etape`` d'un ``Scénario``
+et une liste d'expressions régulières que vous pouvez définir. Autrement dit,
+c'est votre boulot de dire à Behat ce que signifie ``Etant
+donné que je suis dans le dossier "test"``. Heureusement, Behat vous aide et
+affiche l'expression régulière dont vous avez probablement besoin pour définir
+votre étape :
 
 .. code-block:: text
 
-    You can implement step definitions for undefined steps with these snippets:
+    Vous pouvez implémenter les définitions d'étapes pour les étapes non définies avec ces modèles :
 
-        /**
-         * @Given /^I am in a directory "([^"]*)"$/
-         */
-        public function iAmInADirectory($argument1)
-        {
-            throw new PendingException();
-        }
+    /**
+     * @Given /^que je suis dans le dossier "([^"]*)"$/
+     */
+    public function queJeSuisDansLeDossier($argument1)
+    {
+        throw new PendingException();
+    }
 
-Let's use Behat's advice and add the following to the ``features/bootstrap/FeatureContext.php``
-file, renaming ``$argument1`` to ``$dir``, simply for clarity:
+Suivez les conseils de Behat et ajoutez ce qui suit au fichier
+``features/bootstrap/FeatureContext.php``.Renommez juste ``$argument1`` en
+``$dir``, pour plus de clarté:
 
 .. code-block:: php
 
@@ -282,9 +286,9 @@ file, renaming ``$argument1`` to ``$dir``, simply for clarity:
     class FeatureContext extends BehatContext
     {
         /**
-         * @Given /^I am in a directory "([^"]*)"$/
+         * @Given /^que je suis dans le dossier "([^"]*)"$/
          */
-        public function iAmInADirectory($dir)
+        public function queJeSuisDansLeDossier($argument1)
         {
             if (!file_exists($dir)) {
                 mkdir($dir);
@@ -293,29 +297,37 @@ file, renaming ``$argument1`` to ``$dir``, simply for clarity:
         }
     }
 
-Basically, we've started with the regular expression suggested by Behat, which
-makes the value inside the quotations (e.g. "test") available as the ``$dir``
-variable. Inside the method, we simple create the directory and move into it.
+Très simplement, on a démarré par une expression régulière suggérée par Behat, 
+expression qui rend les valeurs entre guillemets (c'est-à-dire 
+"test") disponibles sous forme de variables (ici ``$dir``). Il suffit 
+maintenant, à l'intérieur de la méthode, de créer le dossier approprié et de 
+nous y déplacer.
 
-Repeat this for the other three missing steps so that your ``FeatureContext.php``
-file looks like this:
+Répétez l'opération pour les autres étapes non définies. Le fichier
+``FeatureContext.php`` devrait ressembler à ceci :
 
 .. code-block:: php
 
     # features/bootstrap/FeatureContext.php
     <?php
 
-    use Behat\Behat\Context\BehatContext,
+    use Behat\Behat\Context\ClosuredContextInterface,
+        Behat\Behat\Context\TranslatedContextInterface,
+        Behat\Behat\Context\BehatContext,
         Behat\Behat\Exception\PendingException;
     use Behat\Gherkin\Node\PyStringNode,
         Behat\Gherkin\Node\TableNode;
 
+    /**
+     * Features context.
+     */
     class FeatureContext extends BehatContext
     {
-        private $output;
 
-        /** @Given /^I am in a directory "([^"]*)"$/ */
-        public function iAmInADirectory($dir)
+        /**
+         * @Given /^que je suis dans le dossier "([^"]*)"$/
+         */
+        public function queJeSuisDansLeDossier($dir)
         {
             if (!file_exists($dir)) {
                 mkdir($dir);
@@ -323,21 +335,27 @@ file looks like this:
             chdir($dir);
         }
 
-        /** @Given /^I have a file named "([^"]*)"$/ */
-        public function iHaveAFileNamed($file)
+        /**
+         * @Given /^que j\'ai un fichier nommé "([^"]*)"$/
+         */
+        public function queJAiUnFichierNomme($file)
         {
             touch($file);
         }
 
-        /** @When /^I run "([^"]*)"$/ */
-        public function iRun($command)
+        /**
+         * @Given /^j\'exécute la commande "([^"]*)"$/
+         */
+        public function jExecuteLaCommande($command)
         {
             exec($command, $output);
             $this->output = trim(implode("\n", $output));
         }
 
-        /** @Then /^I should get:$/ */
-        public function iShouldGet(PyStringNode $string)
+        /**
+         * @Then /^je dois obtenir :$/
+         */
+        public function jeDoisObtenir(PyStringNode $string)
         {
             if ((string) $string !== $this->output) {
                 throw new Exception(
@@ -349,57 +367,60 @@ file looks like this:
 
 .. note::
 
-    When you specify multi-line step arguments - like we did using the triple
-    quotation syntax (``"""``) in the above scenario, the value passed into
-    the step function (e.g. ``$string``) is actually an object, which can
-    be converted into a string using ``(string) $string`` or
+    Quand vous utilisez des arguments multi-lignes - comme lorsque nous 
+    avons utilisé la syntaxe ``"""`` plus haut - la valeur passée à la 
+    méthode (c'est-à-dire ``$string``) est un objet qui peut être converti en 
+    chaîne de caratères en utilisant la syntaxe ``(string) $string``, ou bien 
     ``$string->getRaw()``.
 
-Great! Now that you've defined all of your steps, run Behat again:
+Bien ! Maintenant que vous avez défini toutes vos étapes, lancez à nouveau
+Behat: :
 
 .. code-block:: bash
 
     $ behat
 
-.. image:: /images/ls_passing_one_step.png
+.. image:: /images/ls_passing_one_step.jpg
    :align: center
 
-Success! Behat executed each of your steps - creating a new directory with
-two files and running the ``ls`` command - and compared the result to the
-expected result.
+Tout est valide ! Behat a exécuté chacune de vos étapes - créer un nouveau
+dossier qui contient deux fichiers, puis exécuter la commande ``ls`` - et a
+comparé le résultat obtenu au résultat attendu.
 
-Of course, now that you've defined your basic steps, adding more scenarios
-is easy. For example, add the following to your ``features/ls.feature`` file
-so that you now have two scenarios defined:
+Bien sûr, maintenant que vous avez défini vos étapes de base, ajouter des
+scénarios à facile. Par exemple, ajoutez ce qui suit au fichier
+``features/ls.feature``. Vous aurez alors deux scénarios :
 
 .. code-block:: gherkin
 
-    Scenario: List 2 files in a directory with the -a option
-      Given I am in a directory "test"
-      And I have a file named "foo"
-      And I have a file named ".bar"
-      When I run "ls -a"
-      Then I should get:
-        """
-        .
-        ..
-        .bar
-        foo
-        """
+    Scénario: Lister 2 fichiers d'un dossuer avec le paramètre -a
+        Etant donné que je suis dans le dossier "test"
+        Et que j'ai un fichier nommé "foo"
+        Et que j'ai un fichier nommé "bar"
+        Quand j'exécute la commande "ls -a"
+        Alors je dois obtenir :
+          """
+          .
+          ..
+          bar
+          foo
+          """
 
+Lancez à nouveau Behat. Cette fois, deux tests sont exécutés ; et les deux
+passent bien !
 Run Behat again. This time, it'll run two tests, and both will pass.
 
-.. image:: /images/ls_passing_two_steps.png
+.. image:: /images/ls_passing_two_steps.jpg
    :align: center
 
-That's it! Now that you've got a few steps defined, you can probably dream
-up lots of different scenarios to write for the ``ls`` command. Of course,
-this same basic idea could be used to test web applications, and Behat integrates
-beautifully with a library called `Mink`_ to do just that.
+C'est tout ! Une fois que vous avez quelques étapes définies, vous pouvez 
+imaginez une foule de scénarios à rédiger pour la commande ``ls``. Bien sûr, 
+la même chose peut être réalisée pour tester des applications Web, et Behat 
+intègre une librairie très riche, appelée `Mink`_, pour cela.
 
-Of course, there's still lot's more to learn, including more about the
-:doc:`Gherkin syntax </guides/1.gherkin>` (the language used in the ``ls.feature``
-file).
+Bien sûr, il reste encore pas mal de choses à apprendre encore, y compris 
+en découvrir plus sur la :doc:`Syntaxe de Gherkin </guides/1.gherkin>` (le
+language utilisé dans le fichier ``ls.feature``).
 
 Some more Behat Basics
 ----------------------
